@@ -1,3 +1,3 @@
 # SoftwareTesting
 
-### This repo is intendet to store first software testing's homework
+### This repo is intended for store first software testing's homework
