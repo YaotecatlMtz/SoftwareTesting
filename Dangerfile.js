@@ -1,51 +1,43 @@
-const { danger, warn, fail, message } = require("danger");
+// dangerfile.js
 
-// ✅ 1️⃣ Verificar que DangerJS se esté ejecutando en un PR
-if (!danger.github) {
-  console.log("⚠️ DangerJS solo se ejecuta en Pull Requests.");
-  process.exit(0);
-}
+// Reglas para verificar los mensajes de commit
+const commitMessages = danger.git.commits.map(commit => commit.message);
 
-// ✅ 2️⃣ Obtener archivos modificados y agregados
-const modifiedFiles = danger.git.modified_files || [];
-const createdFiles = danger.git.created_files || [];
-const deletedFiles = danger.git.deleted_files || [];
+// 1. Comprobar que el título del commit tenga un máximo de 50 caracteres
+commitMessages.forEach(message => {
+  const title = message.split('\n')[0]; // Primer línea (título)
+  if (title.length > 50) {
+    fail(`El título del commit no debe tener más de 50 caracteres. Título actual: "${title}"`);
+  }
+});
 
-console.log("📝 Archivos modificados:", modifiedFiles);
-console.log("📂 Archivos nuevos:", createdFiles);
-console.log("🗑️ Archivos eliminados:", deletedFiles);
+// 2. Comprobar que haya una línea vacía entre el título y la descripción
+commitMessages.forEach(message => {
+  const lines = message.split('\n');
+  const title = lines[0]; // Primer línea (título)
+  const description = lines.slice(1).join('\n'); // Todo el texto después del título
 
-// ✅ 3️⃣ Reglas de revisión
+  if (description && lines[1] && lines[1].trim() !== '') {
+    fail('Debe haber una línea vacía entre el título y la descripción del commit.');
+  }
+});
 
-// ⚠️ Avisar si `package.json` o `package-lock.json` cambiaron sin cambios en `node_modules`
-if (
-  (modifiedFiles.includes("package.json") || modifiedFiles.includes("package-lock.json")) &&
-  !modifiedFiles.some((file) => file.includes("node_modules"))
-) {
-  warn("📦 Cambiaste `package.json` o `package-lock.json`, asegúrate de actualizar dependencias.");
-}
+// 3. Comprobar que la descripción tenga al menos 5 caracteres
+commitMessages.forEach(message => {
+  const description = message.split('\n').slice(1).join('\n').trim(); // Descripción (todo después del título)
+  if (description.length < 5) {
+    fail('La descripción del commit debe tener al menos 5 caracteres.');
+  }
+});
 
-// ⚠️ Revisión de cambios en archivos críticos
-const criticalFiles = ["src/index.js", "server.js", ".github/workflows/danger.yml"];
-const modifiedCritical = modifiedFiles.filter((file) => criticalFiles.includes(file));
+// 4. Comprobar que cada línea de la descripción no tenga más de 72 caracteres
+commitMessages.forEach(message => {
+  const description = message.split('\n').slice(1).join('\n'); // Descripción (todo después del título)
+  const lines = description.split('\n');
 
-if (modifiedCritical.length > 0) {
-  warn(`⚠️ Modificaste archivos críticos: ${modifiedCritical.join(", ")}`);
-}
-
-// ❌ Fallo si falta descripción en el PR
-if (!danger.github.pr.body || danger.github.pr.body.length < 10) {
-  fail("❌ Agrega una descripción al Pull Request.");
-}
-
-// ✅ 4️⃣ Convenciones de commits (Conventional Commits)
-const prTitle = danger.github.pr.title;
-const commitRegex = /^(feat|fix|docs|style|refactor|perf|test|chore|revert)(\(.+\))?:\s.+/;
-
-if (!commitRegex.test(prTitle)) {
-  fail("❌ El título del PR no sigue Conventional Commits. Ejemplo: `feat(auth): agregar login`");
-}
-
-// ✅ 5️⃣ Mensaje de éxito si todo está bien
-message("🎉 ¡Revisión de PR activada! Todo se ve bien.");
-
+  lines.forEach(line => {
+    if (line.length > 72) {
+      fail(`La línea de la descripción no debe tener más de 72 caracteres. Línea: "${line}"`);
+    }
+  });
+});
