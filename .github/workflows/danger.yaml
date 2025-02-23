@@ -7,6 +7,10 @@ on:
 jobs:
   danger:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: write
+      statuses: write
     steps:
       - name: Checkout del código
         uses: actions/checkout@v3
@@ -22,4 +26,4 @@ jobs:
       - name: Ejecutar DangerJS
         run: npx danger ci
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
