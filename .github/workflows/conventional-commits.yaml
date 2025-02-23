@@ -3,10 +3,10 @@ name: Conventional Commits Check
 on:
   pull_request:
     branches:
-      - main  # Replace with your default branch name (e.g., master, develop)
+      - main  
   push:
     branches:
-      - main  # Replace with your default branch name
+      - main  
 
 jobs:
   check-commits:
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Fetch all history for the repository
+          fetch-depth: 0  
 
       - name: Check Conventional Commits
         uses: TiagoDanin/conventional-commits-action@v1
