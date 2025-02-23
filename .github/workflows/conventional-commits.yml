@@ -1,0 +1,24 @@
+name: Conventional Commits Check
+
+on:
+  pull_request:
+    branches:
+      - main  # Replace with your default branch name (e.g., master, develop)
+  push:
+    branches:
+      - main  # Replace with your default branch name
+
+jobs:
+  check-commits:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for the repository
+
+      - name: Check Conventional Commits
+        uses: TiagoDanin/conventional-commits-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          types: "feat,fix,docs,style,refactor,test,chore"
