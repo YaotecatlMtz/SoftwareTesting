@@ -1,20 +1,8 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+    rev: v4.0.1
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
-      - id: check-json
-
-  - repo: https://github.com/pre-commit/mirrors-eslint
-    rev: v8.55.0  # Use the latest stable version of ESLint
-    hooks:
-      - id: eslint
-        additional_dependencies: ['eslint@8.55.0', 'eslint-plugin-react@7.33.2']  # Add ESLint and plugins
-        args: ['--fix']  # Automatically fix issues
-
-  - repo: https://github.com/okonet/lint-staged
-    rev: v13.2.3  # Use the latest stable version
-    hooks:
-      - id: lint-staged
+      - id: check-added-large-files
