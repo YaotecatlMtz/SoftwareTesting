@@ -3,23 +3,21 @@ on:
   pull_request:
     branches:
       - main  
+  push:
+    branches:
+      - main 
 
 jobs:
   danger:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
-          ruby-version: 3.1  
-          
+          node-version: 18
       - name: Install dependencies
-        run: gem install danger
-
-      - name: Run Danger
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: danger
+        run: npm install
+      - name: Run DangerJS
+        run: npx danger ci
