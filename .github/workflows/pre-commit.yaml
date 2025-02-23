@@ -1,8 +1,9 @@
 name: pre-commit
+
 on:
   pull_request:
     branches:
-      - main  
+      - main
   push:
     branches:
       - main
@@ -11,19 +12,11 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
-          node-version: '18' 
-
+          python-version: '3.9'
       - name: Install pre-commit
         run: pip install pre-commit
-
-      - name: Install ESLint and dependencies
-        run: npm install eslint eslint-plugin-react --save-dev
-
       - name: Run pre-commit
         run: pre-commit run --all-files
