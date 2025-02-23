@@ -3,10 +3,10 @@ name: Conventional Commits Check
 on:
   pull_request:
     branches:
-      - main  
+      - main
   push:
     branches:
-      - main  
+      - main
 
 jobs:
   check-commits:
@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  
+          fetch-depth: 0
 
       - name: Check Conventional Commits
         uses: webiny/action-conventional-commits@v1.3.0

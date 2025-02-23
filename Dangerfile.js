@@ -11,7 +11,7 @@ commitMessages.forEach(message => {
 // 2. Comprobar que haya una línea vacía entre el título y la descripción
 commitMessages.forEach(message => {
   const lines = message.split('\n');
-  const title = lines[0]; 
+  const title = lines[0];
   const description = lines.slice(1).join('\n'); // Todo el texto después del título
 
   if (description && lines[1] && lines[1].trim() !== '') {
