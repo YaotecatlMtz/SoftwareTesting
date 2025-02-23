@@ -6,18 +6,22 @@ on:
   push:
     branches:
       - main 
-
 jobs:
   danger:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout del código
         uses: actions/checkout@v3
-      - name: Setup Node.js
+
+      - name: Configurar Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Install dependencies
+
+      - name: Instalar dependencias
         run: npm install
-      - name: Run DangerJS
+
+      - name: Ejecutar DangerJS
         run: npx danger ci
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
