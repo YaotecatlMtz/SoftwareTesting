@@ -21,10 +21,7 @@ commitMessages.forEach(message => {
 
 // 3. Comprobar que la descripción tenga al menos 5 caracteres
 commitMessages.forEach(message => {
-  console.log("Messages ->", message);
-  const description = message.split(' ').join('\n').trim();
   if (description.length < 5) {
-    console.log("description ->",description);
     fail('La descripción del commit debe tener al menos 5 caracteres.');
   }
 });
